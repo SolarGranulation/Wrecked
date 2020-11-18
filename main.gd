@@ -32,11 +32,35 @@ var all_the_things = {
 
 # ROOMS BEGIN HERE
 # Which are all part of the island array
+const ROOMS = "rooms"
+const ROOM = "room"
+const TITLE = "title"
+const DESCRIPTION = "description"
 
 func _init():
+	var _elem:String
 	var _err = _roomstream.open(_roomfile)
 	
-# I'd like to read these in
-# from an xml file
+	# Need to design the loops/functions
+	while _err == OK:
+		_err = _roomstream.read()
+		if _err != OK:
+			return _err
+		if _roomstream.get_node_type() == XMLParser.NODE_ELEMENT_END:
+			continue
+		_elem = _roomstream.get_node_name()
+		if _elem == TITLE:
+			print("Hi")
+			_err = _roomstream.read()
+			if _err != OK:
+				return _err
+			print(_roomstream.get_node_data())
+			print("Bye")
+
+# _title:String
+# _descriptions = [] # An array, accessed using _current_state
+# _current_state:int
+# _ways = [] # An array of Way objects, linking rooms.
+# _inventory = [] # An array of Items
 
 # HERE ENDETH THE ROOMS
