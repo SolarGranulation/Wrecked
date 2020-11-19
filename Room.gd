@@ -42,7 +42,5 @@ func take(): # For taking Items from the room's
 	# inventory. Syntax TBD
 	pass
 
-func _init(title:String, 
-description:String):
+func _init(title:String):
 	_title = title
-	_descriptions.append(description)

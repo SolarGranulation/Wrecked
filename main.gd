@@ -30,58 +30,80 @@ var all_the_things = {
 	}
 # HERE ENDETH THE THINGS
 
-# ROOMS BEGIN HERE
-# Which are all part of the island array
+# LET'S BUILD AN ISLAND! 
+const ISLAND = "island"
 const ROOMS = "rooms"
 const ROOM = "room"
 const TITLE = "title"
 const DESCRIPTION = "description"
 
+func extract_text(_stream:XMLParser) -> String:
+	if _stream.read() != OK:
+		return ""
+	# Check that it's text
+	if _stream.get_node_type() != XMLParser.NODE_TEXT:
+		return ""
+	return _stream.get_node_data()
+		
 func build_room(_stream:XMLParser):
 	var new_room:Room # Constructor takes title and description 0
 	var _title
-	var _description # Description 0
-	var _additional_descriptions = []
+	var _descriptions = []
+	
 	# Read the next line, controlling a while loop
+	while _stream.read() == OK:
 		# Check node type:
+		var _type = _stream.get_node_type()
 		# If it's an element END:
-			# If it's /room:
-				#return
-			#otherwise:
-				#continue
+		if _type == XMLParser.NODE_ELEMENT_END:
+			# and it's /room, break out of loop:
+			if _stream.get_node_name() == ROOM:
+				break
+			# otherwise continue:
+			continue # end-if of NODE_ELEMENT_END
 		# If it's an element: 
-		# Check element name:
+		if _type == XMLParser.NODE_ELEMENT:
+			# Check element name:
+			var _elem = _stream.get_node_name()
 			# If title:
-				# Advance to next (text) element
+			if _elem == TITLE:
 				# set _title
-			# If first description:
-				# Advance to next (text) element
-				# set _description
-			# If another description:
-				# Advance to next (text) element
-				# append to _additional_descriptions
-	######## This could be better. What if unexpected EOF? ########
+				_title = extract_text(_stream)
+			# If description:
+			if _elem == DESCRIPTION:
+				# add _description
+				_descriptions.append(extract_text(_stream))
+	# END OF WHILE
+	# New type check to catch errors
+	if _stream.get_node_type() == XMLParser.NODE_NONE:
+				return FAILED
+	new_room = Room.new(_title)
+	for d in _descriptions:
+		new_room.add_description(d)
+	return new_room # kind of important :P
 
-func _init():
-	var _elem:String
+func add_room(_stream:XMLParser):
+	pass
+
+func build_island():
 	var _err = _roomstream.open(_roomfile)
 	
 	# Need to design the loops/functions
 	while _roomstream.read() == OK:
-		var _type = _roomstream.get_node_type() 
+		var _type = _roomstream.get_node_type()
+		var _elem = _roomstream.get_node_name() 
 		if _type == XMLParser.NODE_ELEMENT_END:
-			continue # If it's a closing tag, iterate
+			if _elem == ISLAND: # If it's the end of the island
+				return OK
+			continue # If it's another closing tag, iterate
 		if _type == XMLParser.NODE_ELEMENT:
-			_elem = _roomstream.get_node_name()
-			if _elem == ROOM:
-				build_room(_roomstream)
-#			if _elem == TITLE:
-#				_err = _roomstream.read()
-#				if _err != OK:
-#					return _err
-#				if _roomstream.get_node_type() == XMLParser.NODE_TEXT:
-#					print(_roomstream.get_node_data())
-	return _err # _init()
+			if _elem == ROOM: 
+				var roomID = _roomstream.get_named_attribute_value_safe("id")
+				var built_room = build_room(_roomstream)
+				if typeof(built_room) != TYPE_OBJECT:
+					return FAILED
+				island[roomID] = built_room
+	return _err
 
-
-# HERE ENDETH THE ROOMS
+func _init():
+	build_island() # _init() 
