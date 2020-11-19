@@ -1,17 +1,18 @@
 extends Node
 
-# Needed non-class files
-const _roomfile = "res://roomsfile.xml"
-
 # Import classes
 const Item = preload("res://Item.gd")
 const Way = preload("res://Way.gd")
 const Room = preload("res://Room.gd")
 
+# Needed non-class files
+const _roomfile = "res://roomsfile.xml"
+
 # Variables of large scope
 var roomstream:XMLParser = XMLParser.new()
 var island = {}
 var rooms_done = false
+var island_greeting:String
 
 # THINGS BEGIN HERE
 enum {BASKET, 
@@ -33,6 +34,7 @@ var all_the_things = {
 
 # LET'S BUILD AN ISLAND! 
 const ISLAND = "island"
+const ISLAND_GREETING = "greeting"
 const ROOMS = "rooms"
 const ROOM = "room"
 const ROOM_TITLE = "title"
@@ -84,7 +86,7 @@ func build_room(_stream:XMLParser):
 	# END OF WHILE
 	# New type check to catch errors
 	if _stream.get_node_type() == XMLParser.NODE_NONE:
-				return FAILED
+		return FAILED
 	new_room = Room.new(_title)
 	for d in _descriptions:
 		new_room.add_description(d)
@@ -155,13 +157,13 @@ func parse_ways(_stream:XMLParser):
 				return OK
 			continue # If it's another closing tag, iterate
 		if _type == XMLParser.NODE_ELEMENT:
-			if _elem == WAY: 
+			if _elem == WAY:
 				var way_origin = _stream.get_named_attribute_value_safe(WAY_ORIGIN)
 				var made_way = make_way(_stream)
 				if typeof(made_way) != TYPE_OBJECT:
 					return FAILED
 				island[way_origin].add_way(made_way)
-	return FAILED # This should never happen
+	return OK # Normal function exit
 
 func build_island():
 	var _err = roomstream.open(_roomfile)
@@ -176,6 +178,8 @@ func build_island():
 				return OK
 			continue # If it's another closing tag, iterate
 		if _type == XMLParser.NODE_ELEMENT:
+			if _elem == ISLAND_GREETING:
+				island_greeting = extract_text(roomstream)
 			if _elem == ROOMS: 
 				if rooms_done:
 					_err = roomstream.seek(_ways_return-1)
@@ -200,4 +204,8 @@ func build_island():
 	return _err
 
 func _init():
-	build_island() # _init() 
+	match build_island():
+		OK:
+			print_debug("Island successfully built.")
+		_:
+			print_debug("Building island failed.")

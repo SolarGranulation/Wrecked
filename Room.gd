@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 class_name Room
 
@@ -18,7 +18,10 @@ var _inventory = [] # An array of Items
 # Function to return the description, with appended
 # Way and inventory Item decorative texts
 func describe():
-	return _descriptions[_current_state]
+	return self._to_string()
+
+func _to_string():
+	return (_title+"\n"+_descriptions[_current_state]+"\n")
 
 # Increment through room states
 func next_state():

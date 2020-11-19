@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 class_name Way
 
@@ -19,6 +19,9 @@ func change_destination(d:String):
 
 func change_key(k):
 	key = k
+
+func _to_string():
+	return ("Destination: "+destination+" Decor: "+decor)
 
 func _init(_destination: String, _regex: String, _key, _decotext :String):
 	destination = _destination

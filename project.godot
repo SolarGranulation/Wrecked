@@ -9,17 +9,17 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "Node",
 "class": "Item",
 "language": "GDScript",
 "path": "res://Item.gd"
 }, {
-"base": "Node2D",
+"base": "Node",
 "class": "Room",
 "language": "GDScript",
 "path": "res://Room.gd"
 }, {
-"base": "Node2D",
+"base": "Node",
 "class": "Way",
 "language": "GDScript",
 "path": "res://Way.gd"

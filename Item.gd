@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 class_name Item
 # These should be the Values of a global Dictionary 
