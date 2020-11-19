@@ -1,7 +1,7 @@
 extends Node
 
 # Needed non-class files
-const _roomfile = "res://roomsfile.ini"
+const _roomfile = "res://roomsfile.xml"
 
 # Import classes
 const Item = preload("res://Item.gd")
@@ -108,7 +108,43 @@ func parse_rooms(_stream:XMLParser):
 	return FAILED # This should never happen
 
 func make_way(_stream:XMLParser):
-	pass
+	var new_way:Way # Constructor takes title and description 0
+	var _destination
+	var _regex
+	var _key = null
+	var _decor:String
+	
+	# Read the next line, controlling a while loop
+	while _stream.read() == OK:
+		# Check node type:
+		var _type = _stream.get_node_type()
+		# If it's an element END:
+		if _type == XMLParser.NODE_ELEMENT_END:
+			# and it's /room, break out of loop:
+			if _stream.get_node_name() == WAY:
+				break
+			# otherwise continue:
+			continue # end-if of NODE_ELEMENT_END
+		# If it's an element: 
+		if _type == XMLParser.NODE_ELEMENT:
+			# Check element name:
+			var _elem = _stream.get_node_name()
+			# Pull out the details
+			match _elem:
+				WAY_DESTINATION:
+					_destination = extract_text(_stream)
+				WAY_REGEX:
+					_regex = extract_text(_stream)
+				WAY_DECOR:
+					_decor = extract_text(_stream)
+				WAY_KEY:
+					_key = extract_text(_stream)
+	# END OF WHILE
+	# New type check to catch errors
+	if _stream.get_node_type() == XMLParser.NODE_NONE:
+				return FAILED
+	new_way = Way.new(_destination, _regex, _key, _decor)
+	return new_way # kind of important :P
 
 func parse_ways(_stream:XMLParser):
 	while _stream.read() == OK:

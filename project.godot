@@ -35,6 +35,7 @@ _global_script_class_icons={
 config/name="Wrecked"
 config/description="A traditional text adventure. You are stranded on an island, can you survive and escape?"
 run/main_scene="res://Interface.tscn"
+run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [autoload]
