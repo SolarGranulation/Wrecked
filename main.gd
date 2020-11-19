@@ -9,8 +9,9 @@ const Way = preload("res://Way.gd")
 const Room = preload("res://Room.gd")
 
 # Variables of large scope
-var _roomstream:XMLParser = XMLParser.new()
+var roomstream:XMLParser = XMLParser.new()
 var island = {}
+var rooms_done = false
 
 # THINGS BEGIN HERE
 enum {BASKET, 
@@ -34,8 +35,15 @@ var all_the_things = {
 const ISLAND = "island"
 const ROOMS = "rooms"
 const ROOM = "room"
-const TITLE = "title"
-const DESCRIPTION = "description"
+const ROOM_TITLE = "title"
+const ROOM_DESCRIPTION = "description"
+const WAYS = "ways"
+const WAY = "way"
+const WAY_ORIGIN = "origin"
+const WAY_DESTINATION = "destination"
+const WAY_REGEX = "regex"
+const WAY_KEY = "key"
+const WAY_DECOR = "decor"
 
 func extract_text(_stream:XMLParser) -> String:
 	if _stream.read() != OK:
@@ -66,11 +74,11 @@ func build_room(_stream:XMLParser):
 			# Check element name:
 			var _elem = _stream.get_node_name()
 			# If title:
-			if _elem == TITLE:
+			if _elem == ROOM_TITLE:
 				# set _title
 				_title = extract_text(_stream)
 			# If description:
-			if _elem == DESCRIPTION:
+			if _elem == ROOM_DESCRIPTION:
 				# add _description
 				_descriptions.append(extract_text(_stream))
 	# END OF WHILE
@@ -82,27 +90,77 @@ func build_room(_stream:XMLParser):
 		new_room.add_description(d)
 	return new_room # kind of important :P
 
-func add_room(_stream:XMLParser):
+func parse_rooms(_stream:XMLParser):
+	while _stream.read() == OK:
+		var _type = _stream.get_node_type()
+		var _elem = _stream.get_node_name() 
+		if _type == XMLParser.NODE_ELEMENT_END:
+			if _elem == ROOMS: # If it's the end of the rooms
+				return OK
+			continue # If it's another closing tag, iterate
+		if _type == XMLParser.NODE_ELEMENT:
+			if _elem == ROOM: 
+				var roomID = _stream.get_named_attribute_value_safe("id")
+				var built_room = build_room(_stream)
+				if typeof(built_room) != TYPE_OBJECT:
+					return FAILED
+				island[roomID] = built_room
+	return FAILED # This should never happen
+
+func make_way(_stream:XMLParser):
 	pass
 
+func parse_ways(_stream:XMLParser):
+	while _stream.read() == OK:
+		var _type = _stream.get_node_type()
+		var _elem = _stream.get_node_name() 
+		if _type == XMLParser.NODE_ELEMENT_END:
+			if _elem == WAYS: # If it's the end of the rooms
+				return OK
+			continue # If it's another closing tag, iterate
+		if _type == XMLParser.NODE_ELEMENT:
+			if _elem == WAY: 
+				var way_origin = _stream.get_named_attribute_value_safe(WAY_ORIGIN)
+				var made_way = make_way(_stream)
+				if typeof(made_way) != TYPE_OBJECT:
+					return FAILED
+				island[way_origin].add_way(made_way)
+	return FAILED # This should never happen
+
 func build_island():
-	var _err = _roomstream.open(_roomfile)
+	var _err = roomstream.open(_roomfile)
+	var _ways_return = 0
 	
 	# Need to design the loops/functions
-	while _roomstream.read() == OK:
-		var _type = _roomstream.get_node_type()
-		var _elem = _roomstream.get_node_name() 
+	while roomstream.read() == OK:
+		var _type = roomstream.get_node_type()
+		var _elem = roomstream.get_node_name() 
 		if _type == XMLParser.NODE_ELEMENT_END:
 			if _elem == ISLAND: # If it's the end of the island
 				return OK
 			continue # If it's another closing tag, iterate
 		if _type == XMLParser.NODE_ELEMENT:
-			if _elem == ROOM: 
-				var roomID = _roomstream.get_named_attribute_value_safe("id")
-				var built_room = build_room(_roomstream)
-				if typeof(built_room) != TYPE_OBJECT:
-					return FAILED
-				island[roomID] = built_room
+			if _elem == ROOMS: 
+				if rooms_done:
+					_err = roomstream.seek(_ways_return-1)
+					if _err != OK:
+						return _err
+					continue
+				_err = parse_rooms(roomstream)
+				if _err == OK: # control for errors
+					rooms_done = true # Must be before ways
+					continue # Don't need the next statements
+				else:
+					break # Something wrong
+			if _elem == WAYS:
+				# Check that rooms are done
+				if rooms_done: # parse ways
+					_err = parse_ways(roomstream)
+					if _err != OK: #control for errors
+						break
+				else: # if rooms are not done
+					# Prepare to return to this point
+					_ways_return = roomstream.get_node_offset()
 	return _err
 
 func _init():
