@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<island>
+	<rooms>
+		<room id="wreck">
+			<title>Wreck</title>
+			<description state=0>On this beach where you awoke is a long pole with ropes and cloth tangled around; the mast and sail of your boat. The yellow sand curves within the shallow bay before an ocean that stretches beyond the horizon. The land rises smoothly from the beach in two directions, separated by a sharp outcrop of rock. <!-- WAY MOVED TO WAYS -->, to the other a rock-strewn rise toward a craggy hill.</description>
+		</room>
+		<room id="ferns">
+			<title>Among Ferns and Flowers</title>
+			<description state=0>You stand among a thick growth of ferns that rise to your waist, interspersed with small blue and yellow flowers. The beach on which you wrecked is slightly downhill from here, there is a meadow nearby and a gentle rise toward a craggy hill.</description>
+		</room>
+		<room id="craghill">
+			<title>A Craggy Hillside</title>
+			<description state=0>lorem ipsum</description>
+		</room>
+	</rooms>
+	<ways>
+		<way origin="wreck">
+			<destination>ferns</destination>
+			<regex><!-- REGEX NEEDED --></regex>
+			<key></key>
+			<decor>To one side lay great ferns and flowering plants</decor>
+		</way>
+	<ways>
+</island>
