@@ -4,6 +4,7 @@ class_name Room
 
 const Item = preload("res://Item.gd")
 const Way = preload("res://Way.gd")
+const BREAK = "\n"
 
 #Class variables
 var _title:String
@@ -17,11 +18,14 @@ var _inventory = [] # An array of Items
 
 # Function to return the description, with appended
 # Way and inventory Item decorative texts
-func describe():
-	return self._to_string()
-
 func _to_string():
-	return (_title+"\n"+_descriptions[_current_state]+"\n")
+	var output:String = _title
+	output += BREAK
+	output += _descriptions[_current_state]
+	for w in _ways:
+		output += " "
+		output += _ways[w]
+	return output
 
 # Increment through room states
 func next_state():
