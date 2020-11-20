@@ -29,9 +29,15 @@ func _to_string():
 
 # Increment through room states
 func next_state():
-	_current_state += 1
-	if _current_state >= _descriptions.size():
+	if ! set_state(_current_state + 1):
 		_current_state = 0
+
+func set_state(new_state:int) -> bool:
+	if _descriptions.size() <= new_state:
+		return false
+	# Implicit else
+	_current_state = new_state
+	return true
 
 # Add another descriptive state
 func add_description(description:String):
