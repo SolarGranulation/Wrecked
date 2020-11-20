@@ -24,7 +24,7 @@ func _to_string():
 	output += _descriptions[_current_state]
 	for w in _ways:
 		output += " "
-		output += _ways[w]
+		output += w.decor
 	return output
 
 # Increment through room states

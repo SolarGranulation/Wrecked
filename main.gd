@@ -207,5 +207,7 @@ func _init():
 	match build_island():
 		OK:
 			print_debug("Island successfully built.")
+			for R in island:
+				print(island[R])
 		_:
 			print_debug("Building island failed.")
