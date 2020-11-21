@@ -6,7 +6,7 @@ const Item = preload("res://Item.gd")
 
 var destination # A Room's dictionary key.
 # Otherwise things will go wrong.
-var regex:String # A regular expression
+var regex:RegEx = RegEx.new() # A regular expression
 # which, when matched to the player's 
 # input, will catch attempts to move
 var key # An item needed for passage
@@ -25,6 +25,10 @@ func _to_string():
 
 func _init(_destination: int, _regex: String, _key, _decotext :String):
 	destination = _destination
-	regex = _regex
+	regex.compile(_regex)
 	key = _key
 	decor = _decotext
+	if ! regex.is_valid():
+		print_debug("Regex INVALID!")
+	else:
+		print_debug("Regex valid.")

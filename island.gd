@@ -144,6 +144,7 @@ func make_way(_stream:XMLParser):
 					_destination = extract_text(_stream).hash()
 				WAY_REGEX:
 					_regex = extract_text(_stream)
+					# print_debug(_regex)
 				WAY_DECOR:
 					_decor = extract_text(_stream)
 				WAY_KEY:

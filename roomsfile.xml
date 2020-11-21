@@ -4,23 +4,49 @@
 	<rooms>
 		<room id="wreck">
 			<title>Wreck</title>
-			<description>On this beach where you awoke is a long pole with ropes and cloth tangled around; the mast and sail of your boat. The yellow sand curves within the shallow bay before an ocean that stretches beyond the horizon. The land rises smoothly from the beach in two directions, separated by a sharp outcrop of rock. <!-- WAY MOVED TO WAYS -->, to the other a rock-strewn rise toward a craggy hill.</description>
+			<description>On this beach where you awoke is a long pole with ropes and cloth tangled around; the mast and sail of your boat. The yellow sand curves within the shallow bay before an ocean that stretches beyond the horizon. The land rises smoothly from the beach in two directions, separated by a sharp outcrop of rock.</description>
 		</room>
 		<room id="ferns">
 			<title>Among Ferns and Flowers</title>
-			<description>You stand among a thick growth of ferns that rise to your waist, interspersed with small blue and yellow flowers. The beach on which you wrecked is slightly downhill from here, there is a meadow nearby and a gentle rise toward a craggy hill.</description>
+			<description>You stand among a thick growth of ferns that rise to your waist, interspersed with small blue and yellow flowers.</description>
 		</room>
 		<room id="craghill">
 			<title>A Craggy Hillside</title>
-			<description>lorem ipsum</description>
+			<description>Lichen-covered rocks jut out of the moss on this hillside. No other growth survives here, having been scoured by high winds. The hill crests after a moderate ascent,</description>
 		</room>
 	</rooms>
 	<ways>
 		<way origin="wreck">
 			<destination>ferns</destination>
-			<regex><!-- REGEX NEEDED --></regex>
+			<regex>(great|fern|flower|plant)</regex>
 			<key></key>
 			<decor>To one side lay great ferns and flowering plants</decor>
+		</way>
+		<way origin="wreck">
+			<destination>craghill</destination>
+			<decor> to the other a rock-strewn rise toward a craggy hill.
+			<key></key>
+			<regex>(rock|strewn|rise|crag|craggy|hill)</regex>
+		</way>
+		<way origin="ferns">
+			<destination>wreck</destination>
+			<regex>(wreck|beach|down|downhill)</regex>
+			<decor>The beach on which you wrecked is slightly downhill from here</decor>
+		</way>
+		<way origin="ferns">
+			<destination>craghill</destination>
+			<decor>and a craggy hill beyond a gentle rise.</decor>
+			<regex>(crag|hill|beyond|gentle|rise)</regex>
+		</way>
+		<way origin="craghill">
+			<destination>wreck</destination>
+			<decor>the beach where you awoke</decor>
+			<regex>(beach|awoke|wreck)</regex>
+		</way>
+		<way origin="craghill">
+			<destination>ferns</destination>
+			<decor>and an area thick with ferns and flowers lie below.</decor>
+			<regex>(area|thick|fern|flower)</regex>
 		</way>
 	<ways>
 </island>
