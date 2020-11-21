@@ -15,6 +15,8 @@ var roomstream:XMLParser = XMLParser.new()
 var island = {}
 var rooms_done = false
 var island_greeting:String
+var first_room:int
+var subsequent_room:bool = false
 
 # THINGS BEGIN HERE
 enum {BASKET, 
@@ -104,11 +106,14 @@ func parse_rooms(_stream:XMLParser):
 			continue # If it's another closing tag, iterate
 		if _type == XMLParser.NODE_ELEMENT:
 			if _elem == ROOM: 
-				var roomID = _stream.get_named_attribute_value_safe("id")
+				var roomID = _stream.get_named_attribute_value_safe("id").hash()
 				var built_room = build_room(_stream)
 				if typeof(built_room) != TYPE_OBJECT:
 					return FAILED
 				island[roomID] = built_room
+				if !subsequent_room:
+					first_room = roomID
+					subsequent_room = true
 	return FAILED # This should never happen
 
 func make_way(_stream:XMLParser):
@@ -136,7 +141,7 @@ func make_way(_stream:XMLParser):
 			# Pull out the details
 			match _elem:
 				WAY_DESTINATION:
-					_destination = extract_text(_stream)
+					_destination = extract_text(_stream).hash()
 				WAY_REGEX:
 					_regex = extract_text(_stream)
 				WAY_DECOR:
@@ -164,7 +169,7 @@ func parse_ways(_stream:XMLParser):
 				var made_way = make_way(_stream)
 				if typeof(made_way) != TYPE_OBJECT:
 					return FAILED
-				island[way_origin].add_way(made_way)
+				island[way_origin.hash()].add_way(made_way)
 	return OK # Normal function exit
 
 func build_island():

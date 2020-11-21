@@ -23,7 +23,7 @@ func change_key(k):
 func _to_string():
 	return decor
 
-func _init(_destination: String, _regex: String, _key, _decotext :String):
+func _init(_destination: int, _regex: String, _key, _decotext :String):
 	destination = _destination
 	regex = _regex
 	key = _key
