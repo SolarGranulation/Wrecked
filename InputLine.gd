@@ -12,7 +12,6 @@ func _ready():
 	var Room = load("res://Room.gd")
 	#var testRoom = Room.new("Foo", "Bar")
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		pass
