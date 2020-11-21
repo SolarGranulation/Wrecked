@@ -1,16 +1,27 @@
 extends Node
 
 # Import classes
-const Item = preload("res://Item.gd")
 const Island = preload("res://island.gd")
 
+# Other constants
+const LOOK = "look"
+
 var game:Island = Island.new()
+var player_location
+var terminal:RichTextLabel 
+
+func _command(input:String):
+	if input.begins_with(LOOK):
+		terminal.text += "\n\r" + game.island[player_location]._to_string() + "\n\r"
+
+func _ready():
+	terminal = get_node("/root/Control/PanelText/LayoutText/OutputRich")
+	print(terminal.text)
 
 func _init():
 	match game.build_island():
 		OK:
 			print_debug("Island successfully built.")
-			for R in game.island:
-				print(game.island[R])
+			player_location = "wreck"
 		_:
 			print_debug("Building island failed.")

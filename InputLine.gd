@@ -14,4 +14,6 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		pass
+		var topass = self.text # Save input so we can...
+		self.clear() # clear the input immediately...
+		Main._command(topass) # and still process it.

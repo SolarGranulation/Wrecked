@@ -21,7 +21,7 @@ func change_key(k):
 	key = k
 
 func _to_string():
-	return ("Destination: "+destination+" Decor: "+decor)
+	return decor
 
 func _init(_destination: String, _regex: String, _key, _decotext :String):
 	destination = _destination
