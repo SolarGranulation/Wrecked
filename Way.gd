@@ -29,6 +29,6 @@ func _init(_destination: int, _regex: String, _key, _decotext :String):
 	key = _key
 	decor = _decotext
 	if ! regex.is_valid():
-		print_debug("Regex INVALID!")
+		print_debug("Regex INVALID! This one: " + _key)
 	else:
 		print_debug("Regex valid.")
