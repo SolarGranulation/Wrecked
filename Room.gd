@@ -11,9 +11,9 @@ var _title:String
 var _descriptions = [] # An array, accessed using _current_state
 var _current_state:int = 0
 var _ways = [] # An array of Way objects, linking rooms.
-var _inventory = [] # An array of Items
+var _inventory = [] # An array of Items by ENUM
 # Rooms also have an id value - that is a
-# String-type variant used as the key in
+# int-type variant used as the key in
 # the island dictionary
 
 # Function to return the description, with appended

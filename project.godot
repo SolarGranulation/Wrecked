@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "Castaway",
+"language": "GDScript",
+"path": "res://player.gd"
+}, {
+"base": "Node",
 "class": "Island",
 "language": "GDScript",
 "path": "res://island.gd"
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://Way.gd"
 } ]
 _global_script_class_icons={
+"Castaway": "",
 "Island": "",
 "Item": "",
 "Room": "",
@@ -47,10 +53,6 @@ config/icon="res://icon.png"
 [autoload]
 
 Main="*res://main.gd"
-PluginSettings="*res://addons/github-integration/scripts/PluginSettings.gd"
-IconLoaderGithub="*res://addons/github-integration/scripts/IconLoaderGithub.gd"
-RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
-UserData="*res://addons/github-integration/scripts/user_data.gd"
 
 [debug]
 
