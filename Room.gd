@@ -2,8 +2,8 @@ extends Node
 
 class_name Room
 
-const Way = preload("res://Way.gd")
 const Inventory = preload("res://inventory.gd")
+const Way = preload("res://Way.gd")
 const BREAK = "\n"
 
 #Class variables
