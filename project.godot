@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://player.gd"
 }, {
 "base": "Node",
+"class": "Inventory",
+"language": "GDScript",
+"path": "res://inventory.gd"
+}, {
+"base": "Node",
 "class": "Island",
 "language": "GDScript",
 "path": "res://island.gd"
@@ -36,6 +41,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Castaway": "",
+"Inventory": "",
 "Island": "",
 "Item": "",
 "Room": "",

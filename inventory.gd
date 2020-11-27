@@ -1,13 +1,11 @@
 extends Node
 
-class_name Castaway
-
-# Include
-const Inventory = preload("res://inventory.gd")
+# This will be a minimal class just to ensure matching
+# inventory handling across all cases
+class_name Inventory
 
 # Members
-var location:int = 0 # island index
-var inventory = Inventory.new()
+var contents = [] # An array of Items by ENUM
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

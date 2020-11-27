@@ -2,8 +2,8 @@ extends Node
 
 class_name Room
 
-const Item = preload("res://Item.gd")
 const Way = preload("res://Way.gd")
+const Inventory = preload("res://inventory.gd")
 const BREAK = "\n"
 
 #Class variables
@@ -11,7 +11,8 @@ var _title:String
 var _descriptions = [] # An array, accessed using _current_state
 var _current_state:int = 0
 var _ways = [] # An array of Way objects, linking rooms.
-var _inventory = [] # An array of Items by ENUM
+var _inventory = Inventory.new()
+
 # Rooms also have an id value - that is a
 # int-type variant used as the key in
 # the island dictionary
@@ -48,7 +49,7 @@ func add_description(description:String):
 func add_way(new_way:Way):
 	_ways.append(new_way)
 
-func put(thing:Item): # Put Item in room inventory
+func put(): # Put Item in room inventory
 	pass
 
 func take(): # For taking Items from the room's
